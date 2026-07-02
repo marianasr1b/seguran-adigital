@@ -1,1 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  padding: 20px;
+}
 
+.parametro-senha {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+h4 {
+  margin-bottom: 10px;
+}
+
+button {
+  font-size: 18px;
+  padding: 8px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+#tamanho-texto {
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+.checkbox {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+#campo-senha {
+  width: 100%;
+  font-size: 20px;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 4px;
+  border: 2px solid #555;
+  background: #eee;
+}
+
+.barra {
+  background: #ddd;
+  height: 30px;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.forca {
+  height: 30px;
+  border-radius: 6px 0 0 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.fraca {
+  width: 25%;
+  background: #E71B32;
+}
+
+.media {
+  width: 50%;
+  background: #FAF408;
+}
+
+.forte {
+  width: 100%;
+  background: #00FF85;
+}
+
+.entropia {
+  font-style: italic;
+  color: #666;
+}
