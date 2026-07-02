@@ -1,1 +1,127 @@
+!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gerador de Senha Simplificado</title>
+<style>
+  /* Cola o CSS que te mando aqui depois */
+</style>
+</head>
+<body>
 
+<div class="parametro-senha">
+  <h4>Número de caracteres</h4>
+  <button id="btn-diminui">-</button>
+  <span id="tamanho-texto">12</span>
+  <button id="btn-aumenta">+</button>
+</div>
+
+<div class="parametro-senha">
+  <h4>Características da senha</h4>
+  <label><input type="checkbox" class="checkbox" checked id="maiusculo"> Letras maiúsculas</label><br>
+  <label><input type="checkbox" class="checkbox" checked id="minusculo"> Letras minúsculas</label><br>
+  <label><input type="checkbox" class="checkbox" checked id="numero"> Números</label><br>
+  <label><input type="checkbox" class="checkbox" checked id="simbolo"> Símbolos</label>
+</div>
+
+<input type="text" id="campo-senha" readonly />
+
+<div class="parametro-senha">
+  <h4>Força da senha</h4>
+  <div class="barra"><div id="barra-forca" class="forca fraca"></div></div>
+  <div style="display:flex; justify-content: space-between;">
+    <span>Fraca</span><span>Média</span><span>Forte</span>
+  </div>
+  <p id="texto-entropia" class="entropia"></p>
+</div>
+
+<button id="btn-autor">Mostrar Autor</button>
+<p id="mensagem-autor" style="margin-top:10px; font-style: italic;"></p>
+
+<script>
+  const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
+  const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
+  const numeros = '0123456789';
+  const simbolos = '!@%*?';
+
+  let tamanhoSenha = 12;
+
+  const tamanhoTexto = document.getElementById('tamanho-texto');
+  const btnDiminui = document.getElementById('btn-diminui');
+  const btnAumenta = document.getElementById('btn-aumenta');
+  const campoSenha = document.getElementById('campo-senha');
+  const barraForca = document.getElementById('barra-forca');
+  const textoEntropia = document.getElementById('texto-entropia');
+
+  const checkMaiusculo = document.getElementById('maiusculo');
+  const checkMinusculo = document.getElementById('minusculo');
+  const checkNumero = document.getElementById('numero');
+  const checkSimbolo = document.getElementById('simbolo');
+
+  const btnAutor = document.getElementById('btn-autor');
+  const msgAutor = document.getElementById('mensagem-autor');
+
+  function geraSenha() {
+    let alfabeto = '';
+    if (checkMaiusculo.checked) alfabeto += letrasMaiusculas;
+    if (checkMinusculo.checked) alfabeto += letrasMinusculas;
+    if (checkNumero.checked) alfabeto += numeros;
+    if (checkSimbolo.checked) alfabeto += simbolos;
+
+    if (!alfabeto) {
+      campoSenha.value = '';
+      barraForca.className = 'forca fraca';
+      textoEntropia.textContent = 'Selecione pelo menos uma característica.';
+      return;
+    }
+
+    let senha = '';
+    for (let i = 0; i < tamanhoSenha; i++) {
+      senha += alfabeto[Math.floor(Math.random() * alfabeto.length)];
+    }
+    campoSenha.value = senha;
+    classificaSenha(alfabeto.length);
+  }
+
+  function classificaSenha(tamanhoAlfabeto) {
+    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    barraForca.className = 'forca';
+    if (entropia > 57) barraForca.classList.add('forte');
+    else if (entropia > 35) barraForca.classList.add('media');
+    else barraForca.classList.add('fraca');
+
+    const dias = Math.floor(2 ** entropia / (100e6 * 60 * 60 * 24));
+    textoEntropia.textContent = `Um computador pode levar até ${dias.toLocaleString()} dias para descobrir essa senha.`;
+  }
+
+  btnAumenta.onclick = () => {
+    if (tamanhoSenha < 20) {
+      tamanhoSenha++;
+      tamanhoTexto.textContent = tamanhoSenha;
+      geraSenha();
+    }
+  }
+
+  btnDiminui.onclick = () => {
+    if (tamanhoSenha > 1) {
+      tamanhoSenha--;
+      tamanhoTexto.textContent = tamanhoSenha;
+      geraSenha();
+    }
+  }
+
+  [checkMaiusculo, checkMinusculo, checkNumero, checkSimbolo].forEach(cb => {
+    cb.onchange = geraSenha;
+  });
+
+  btnAutor.onclick = () => {
+    msgAutor.textContent = "Feito por Rafael Bazilio Escola João Batista Vera";
+  };
+
+  // Gera a senha inicial
+  geraSenha();
+</script>
+
+</body>
+</html>
